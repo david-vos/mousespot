@@ -1,4 +1,5 @@
 import AppKit
+import Carbon.HIToolbox
 import Combine
 import SwiftUI
 
@@ -19,6 +20,8 @@ final class SpotSettings: ObservableObject {
         static let clickScale = "spot.clickScale"
         static let minScale = "spot.minScale"
         static let language = "spot.language"
+        static let hotKeyCode = "spot.hotKeyCode"
+        static let hotKeyModifiers = "spot.hotKeyModifiers"
     }
 
     var radius: Double {
@@ -49,6 +52,14 @@ final class SpotSettings: ObservableObject {
         willSet { objectWillChange.send() }
         didSet { save(Key.language, language) }
     }
+    var hotKeyCode: UInt32 {
+        willSet { objectWillChange.send() }
+        didSet { save(Key.hotKeyCode, Int(hotKeyCode)) }
+    }
+    var hotKeyModifiers: UInt32 {
+        willSet { objectWillChange.send() }
+        didSet { save(Key.hotKeyModifiers, Int(hotKeyModifiers)) }
+    }
 
     var nsColor: NSColor {
         NSColor(color).usingColorSpace(.sRGB) ?? .systemBlue
@@ -62,6 +73,12 @@ final class SpotSettings: ObservableObject {
         clickScale = d.object(forKey: Key.clickScale) as? Double ?? 0.5
         minScale = d.object(forKey: Key.minScale) as? Double ?? 0.2
         language = d.string(forKey: Key.language) ?? Localizer.systemDefault()
+        hotKeyCode = UInt32(
+            d.object(forKey: Key.hotKeyCode) as? Int ?? kVK_ANSI_H
+        )
+        hotKeyModifiers = UInt32(
+            d.object(forKey: Key.hotKeyModifiers) as? Int ?? (controlKey | cmdKey)
+        )
         if let rgb = d.array(forKey: Key.color) as? [Double], rgb.count >= 3 {
             color = Color(.sRGB, red: rgb[0], green: rgb[1], blue: rgb[2])
         } else {

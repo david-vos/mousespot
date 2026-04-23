@@ -10,7 +10,9 @@
         "refresh": "Refresh",
         "clickScale": "Click scale",
         "minScale": "Min scale",
-        "language": "Language"
+        "language": "Language",
+        "hotkey": "Hotkey",
+        "hotkeyRecording": "Press keys…"
     },
     "nl": {
         "toggleCircle": "Cirkel aan/uit",
@@ -23,7 +25,9 @@
         "refresh": "Verversing",
         "clickScale": "Klikgrootte",
         "minScale": "Min grootte",
-        "language": "Taal"
+        "language": "Taal",
+        "hotkey": "Sneltoets",
+        "hotkeyRecording": "Toetsen indrukken…"
     },
     "de": {
         "toggleCircle": "Kreis umschalten",
@@ -36,7 +40,9 @@
         "refresh": "Aktualisierung",
         "clickScale": "Klickgröße",
         "minScale": "Min. Größe",
-        "language": "Sprache"
+        "language": "Sprache",
+        "hotkey": "Tastenkürzel",
+        "hotkeyRecording": "Tasten drücken…"
     },
     "fr": {
         "toggleCircle": "Basculer le cercle",
@@ -49,6 +55,8 @@
         "refresh": "Rafraîchissement",
         "clickScale": "Taille au clic",
         "minScale": "Taille min.",
-        "language": "Langue"
+        "language": "Langue",
+        "hotkey": "Raccourci",
+        "hotkeyRecording": "Appuyez sur les touches…"
     }
 }

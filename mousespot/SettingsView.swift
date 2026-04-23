@@ -28,6 +28,12 @@ struct SettingsView: View {
             row(t("minScale"), value: "\(Int(settings.minScale * 100))%") {
                 Slider(value: $settings.minScale, in: 0.05...1)
             }
+            row(t("hotkey")) {
+                HotKeyField(
+                    keyCode: $settings.hotKeyCode,
+                    modifiers: $settings.hotKeyModifiers
+                )
+            }
             row(t("language")) {
                 Picker("", selection: $settings.language) {
                     ForEach(Localizer.supported, id: \.code) { lang in

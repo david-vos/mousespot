@@ -20,19 +20,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         overlay = OverlayWindow()
 
-        hotKey = HotKey(
-            keyCode: UInt32(kVK_ANSI_H),
-            modifiers: UInt32(controlKey | cmdKey)
-        ) { [weak self] in
-            self?.overlay.toggleTracking()
-        }
+        registerHotKey()
 
         observer = NotificationCenter.default.addObserver(
             forName: SpotSettings.changed,
             object: nil,
             queue: .main
         ) { [weak self] _ in
+            self?.registerHotKey()
             self?.applyLocalization()
+        }
+    }
+
+    private func registerHotKey() {
+        let s = SpotSettings.shared
+        hotKey = nil
+        hotKey = HotKey(
+            keyCode: s.hotKeyCode,
+            modifiers: s.hotKeyModifiers
+        ) { [weak self] in
+            self?.overlay.toggleTracking()
         }
     }
 
@@ -46,13 +53,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func buildMenu() -> NSMenu {
+        let s = SpotSettings.shared
         let menu = NSMenu()
         menu.addItem(
             item(
                 t("toggleCircle"),
                 action: #selector(toggle(_:)),
-                key: "h",
-                modifiers: [.control, .command]
+                key: HotKeyCaptureView.menuKeyEquivalent(for: s.hotKeyCode),
+                modifiers: HotKeyCaptureView.appKitModifiers(from: s.hotKeyModifiers)
             )
         )
         menu.addItem(
