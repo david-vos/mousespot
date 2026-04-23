@@ -5,3 +5,17 @@
 .cursor/
 build/
 
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+DerivedData/
+
+# Swift
+.build/
+Package.resolved
+*.swp
