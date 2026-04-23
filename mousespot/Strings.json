@@ -1,0 +1,54 @@
+{
+    "en": {
+        "toggleCircle": "Toggle circle",
+        "settingsMenu": "Settings…",
+        "quit": "Quit",
+        "settingsTitle": "MouseSpot Settings",
+        "size": "Size",
+        "opacity": "Opacity",
+        "color": "Color",
+        "refresh": "Refresh",
+        "clickScale": "Click scale",
+        "minScale": "Min scale",
+        "language": "Language"
+    },
+    "nl": {
+        "toggleCircle": "Cirkel aan/uit",
+        "settingsMenu": "Instellingen…",
+        "quit": "Stoppen",
+        "settingsTitle": "MouseSpot Instellingen",
+        "size": "Grootte",
+        "opacity": "Dekking",
+        "color": "Kleur",
+        "refresh": "Verversing",
+        "clickScale": "Klikgrootte",
+        "minScale": "Min grootte",
+        "language": "Taal"
+    },
+    "de": {
+        "toggleCircle": "Kreis umschalten",
+        "settingsMenu": "Einstellungen…",
+        "quit": "Beenden",
+        "settingsTitle": "MouseSpot Einstellungen",
+        "size": "Größe",
+        "opacity": "Deckkraft",
+        "color": "Farbe",
+        "refresh": "Aktualisierung",
+        "clickScale": "Klickgröße",
+        "minScale": "Min. Größe",
+        "language": "Sprache"
+    },
+    "fr": {
+        "toggleCircle": "Basculer le cercle",
+        "settingsMenu": "Réglages…",
+        "quit": "Quitter",
+        "settingsTitle": "Réglages MouseSpot",
+        "size": "Taille",
+        "opacity": "Opacité",
+        "color": "Couleur",
+        "refresh": "Rafraîchissement",
+        "clickScale": "Taille au clic",
+        "minScale": "Taille min.",
+        "language": "Langue"
+    }
+}
