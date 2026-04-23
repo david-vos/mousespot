@@ -2,7 +2,7 @@
 
 A small macOS menu bar app that draws a colored circle around your cursor so it's easier to follow during screen shares, presentations, and recordings. The circle pulses when you click and shrinks further while you hold the button.
 
-Inspired by [Hyper Cursor](https://hypercursor.com/), but open source.
+Inspired by [Hyper Cursor](https://apps.apple.com/us/app/hyper-cursor/id1634220679?mt=12), but open source.
 
 ## Features
 
