@@ -1,0 +1,34 @@
+name: PR Lint
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+    branches: [main]
+
+jobs:
+  lint-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+
+          # Conventional Commits pattern: type(optional-scope): description
+          # With optional ! for breaking changes
+          PATTERN="^(feat|fix|chore|docs|refactor|test|ci|style|perf|build)(\([a-z0-9_-]+\))?!?: .+"
+
+          if echo "$TITLE" | grep -qiE "$PATTERN"; then
+            echo "PR title is valid: $TITLE"
+          else
+            echo "::error::PR title must follow Conventional Commits format."
+            echo ""
+            echo "Expected: type(optional-scope): description"
+            echo ""
+            echo "Valid types: feat, fix, chore, docs, refactor, test, ci, style, perf, build"
+            echo ""
+            echo "Examples:"
+            echo "  feat: add user authentication"
+            echo "  fix(auth): resolve token expiry bug"
+            echo "  chore!: drop Node 16 support"
+            exit 1
+          fi

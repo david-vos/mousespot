@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ============================================
+      # YOUR BUILD STEPS HERE
+      # Output files to ./dist/ for release upload
+      # ============================================
+      - name: Build
+        run: |
+          mkdir -p dist
+          echo "Replace this with your build commands"
+          echo "Output files to ./dist/"
+
+      - name: Upload release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload ${{ github.event.release.tag_name }} ./dist/* --clobber
