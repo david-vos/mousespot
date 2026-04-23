@@ -9,21 +9,65 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
-      # ============================================
-      # YOUR BUILD STEPS HERE
-      # Output files to ./dist/ for release upload
-      # ============================================
-      - name: Build
+      - name: Select latest Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+          xcodebuild -version
+
+      - name: Archive (ad-hoc signed, no team)
+        run: |
+          xcodebuild \
+            -project mousespot.xcodeproj \
+            -scheme mousespot \
+            -configuration Release \
+            -archivePath build/mousespot.xcarchive \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY=- \
+            DEVELOPMENT_TEAM="" \
+            archive
+
+      - name: Extract + re-sign ad-hoc
         run: |
           mkdir -p dist
-          echo "Replace this with your build commands"
-          echo "Output files to ./dist/"
+          cp -R build/mousespot.xcarchive/Products/Applications/mousespot.app dist/mousespot.app
+          codesign --force --deep --sign - --options runtime dist/mousespot.app
+          codesign -dv dist/mousespot.app
+
+      - name: Zip
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          cd dist
+          ditto -c -k --keepParent mousespot.app "mousespot-${TAG}.zip"
+          rm -rf mousespot.app
 
       - name: Upload release assets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload ${{ github.event.release.tag_name }} ./dist/* --clobber
+        run: gh release upload "${{ github.event.release.tag_name }}" ./dist/* --clobber
+
+      - name: Append install instructions to release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          MARKER="<!-- install-notes -->"
+          BODY=$(gh release view "$TAG" --json body -q .body)
+          if echo "$BODY" | grep -qF "$MARKER"; then
+            echo "Install notes already present, skipping."
+            exit 0
+          fi
+          {
+            printf '%s\n\n' "$BODY"
+            printf '%s\n' "$MARKER"
+            echo '## Install (unsigned build)'
+            echo 'macOS will flag this app as unidentified. After moving it to `/Applications`, strip the quarantine flag:'
+            echo '```'
+            echo 'xattr -dr com.apple.quarantine /Applications/mousespot.app'
+            echo '```'
+          } > /tmp/notes.md
+          gh release edit "$TAG" --notes-file /tmp/notes.md
